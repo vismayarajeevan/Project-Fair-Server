@@ -48,5 +48,5 @@ pfServer.get('/',(req,res)=>{
 // post
 
 pfServer.post('/',(req,res)=>{
-    
+    res.status(200).send("Post request")
 })

@@ -29,11 +29,19 @@ router.get('/home-project',projectController.homePageProjectController)
 // 2 e)allProject :- http://localhost:3000/all-project
 router.get('/all-project',jwtMiddleware,projectController.allProjectController)
 
-// 2 f)allProject :- http://localhost:3000/user-project
+// 2 f)userProject :- http://localhost:3000/user-project
 router.get('/user-project',jwtMiddleware,projectController.userProjectController)
 
+// 2 g)projects/10/edit :- http://localhost:3000/projects/id/edit
+router.put('/projects/:id/edit',jwtMiddleware,multerMiddleware.single('projectImg'),projectController.editProjectController)
+
+// 2 h)projects/id/remove :- http://localhost:3000/projects/id/remove
+router.delete('/projects/:id/remove',jwtMiddleware,projectController.removeProjectController)
 
 
+// 3. profile edit
+//  3 a)edit-user :- http://localhost:3000/edit-user
+router.put('/edit-user',jwtMiddleware,multerMiddleware.single('profilePic'),usercontroller.editUserController)
 
 // export router
 module.exports =router

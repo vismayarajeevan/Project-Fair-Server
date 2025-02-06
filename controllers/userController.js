@@ -63,3 +63,28 @@ exports.loginController = async(req,res)=>{
     
     
 }
+
+// *********************3.Profile edit********************************
+
+exports.editUserController = async(req,res)=>{
+    console.log("editUserController");
+
+    // get all keys
+    const{username,email,password,github,linkedin,profilePic} = req.body
+    // handle upload profile image
+    const uploadProfilePic = req.file?req.file.filename :profilePic
+
+    // id of user from middleware
+    const userId = req.userId
+    try {
+        const updateUser = await users.findByIdAndUpdate({_id:userId},{
+            username,email,password,github,linkedin,profilePic:uploadProfilePic
+        },{new:true})
+        // save in mongodb
+        await updateUser.save()
+        // send response to frontend
+        res.status(200).json(updateUser)
+    } catch (error) {
+        res.status(401).json(error)
+    }
+}

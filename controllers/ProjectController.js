@@ -99,3 +99,48 @@ exports.userProjectController = async(req,res) =>{
     }
     
 }
+
+// edit projects - need auhorization
+exports.editProjectController = async(req,res) =>{
+
+    console.log("Inside editProjectController");
+    
+    // fetch project id
+    const id = req.params.id
+    // take user id
+    const userId = req.userId
+    // take all project details using destrcturing
+    const {title,languages,overview,github,website,projectImg} = req.body
+
+    // check image is uploaded or not
+    const reUploadProjectImg = req.file?req.file.filename:projectImg
+    
+    // added to mongodb
+    try {
+        // get the projects details findByIdAndUpdate
+        const updateProject = await projects.findByIdAndUpdate({_id:id},{title,languages,overview,github,website,projectImg:reUploadProjectImg,userId},{new:true}) 
+        // save to mongodb
+        await updateProject.save()
+        res.status(200).json(updateProject)
+      
+        
+    } catch (error) {
+        res.status(401).json(error)
+    }
+    
+}
+
+// delete projects -need authorization
+exports.removeProjectController = async(req,res)=>{
+    console.log("Inside removeProjectController");
+
+    const {id} = req.params
+
+    try {
+        const deleteProject = await projects.findByIdAndDelete({_id:id})
+        res.status(200).json(deleteProject)
+    } catch (error) {
+        res.status(401).json(error)
+    }
+    
+}
